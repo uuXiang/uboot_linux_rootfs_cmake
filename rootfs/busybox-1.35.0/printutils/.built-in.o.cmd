@@ -1,0 +1,1 @@
+cmd_printutils/built-in.o :=  rm -f printutils/built-in.o; /home/ubuntu/wuxiang/code_folder/toolchain/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-ar rcs printutils/built-in.o

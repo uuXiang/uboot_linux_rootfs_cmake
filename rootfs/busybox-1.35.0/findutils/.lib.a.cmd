@@ -1,0 +1,1 @@
+cmd_findutils/lib.a := rm -f findutils/lib.a; /home/ubuntu/wuxiang/code_folder/toolchain/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-ar  rcs findutils/lib.a findutils/find.o findutils/grep.o findutils/xargs.o

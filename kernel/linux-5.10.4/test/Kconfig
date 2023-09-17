@@ -1,0 +1,81 @@
+menu "test"
+
+config HELLO
+	tristate
+	prompt "a hello module demo"
+	default n
+	help
+		This is a hello module test
+		you can choose:
+			y: built-in
+			m: module
+			n: not build
+
+config NUM
+	int "cpu core nums setting"
+	default 1
+	help
+		cpu core setting demo
+
+config BOOTCMD
+	string "boot command setting"
+	default "tftp 0x60003000 uImage;bootm"
+	help
+		support many boot options:
+			NAND
+			NOR
+			NET
+			Udisk
+
+config TEST
+	bool "test project demo"
+	select RTC
+	imply KEY
+	help
+		test demo
+
+config LCD
+	bool "a lcd driver demo"
+	depends on TEST
+
+choice
+	prompt "lcd radio setting"
+	depends on LCD
+	config 320p
+		bool "320*240"
+	config 720p
+		bool "1080*720"
+	config 1080p
+		bool "1920*1080"
+endchoice
+
+config RTC
+	bool "a rtc dirver"
+
+config KEY
+	bool "a key driver"
+
+menuconfig A
+	bool "A"
+	config A0
+		bool "A0"
+		depends on A
+	config A1
+		bool "A1"
+		depends on A
+	config A2
+		bool "A2"
+
+menuconfig B
+	bool "B"
+if B
+	config B0
+		bool "B0"
+	config B0
+		bool "B1"
+endif
+	config B2
+		bool "B2"
+
+endmenu
+

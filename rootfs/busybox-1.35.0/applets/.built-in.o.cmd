@@ -1,0 +1,1 @@
+cmd_applets/built-in.o :=  /home/ubuntu/wuxiang/code_folder/toolchain/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -nostdlib -nostdlib  -r -o applets/built-in.o applets/applets.o

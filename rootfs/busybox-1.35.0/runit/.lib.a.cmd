@@ -1,0 +1,1 @@
+cmd_runit/lib.a := rm -f runit/lib.a; /home/ubuntu/wuxiang/code_folder/toolchain/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-ar  rcs runit/lib.a runit/chpst.o runit/runsv.o runit/runsvdir.o runit/sv.o runit/svlogd.o
