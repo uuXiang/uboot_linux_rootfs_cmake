@@ -15,3 +15,13 @@ add_custom_target(drivers
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "make drivers"
 )
+
+add_custom_target(rtc
+    COMMAND ./make_rtc.sh ${TOOLCHAIN_PATH}
+                          ${CMAKE_CURRENT_SOURCE_DIR}/linux-5.10.4
+                          ${CMAKE_CURRENT_SOURCE_DIR}/rtc
+                          ${IMAGE_OUT_DRIVERS_PATH}
+                          ${IMAGE_OUT_APPS_PATH}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "make drivers"
+)

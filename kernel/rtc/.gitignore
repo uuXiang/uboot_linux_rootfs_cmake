@@ -1,0 +1,10 @@
+*/*.o
+*/*~
+*/.depend
+*/.*.cmd
+*/*.mod
+*/*.mod.c
+*/.tmp_versions
+*/*.ko
+*/*.symvers
+*/modules.order
