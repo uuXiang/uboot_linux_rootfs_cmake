@@ -2,8 +2,9 @@
 #include <linux/init.h>
 #include <linux/fs.h>
 #include <linux/io.h>
+#include <linux/cdev.h>
 
-typedef volatile struct{
+typedef volatile struct {
         unsigned long  RTCDR;    /* +0x00: data register */
         unsigned long  RTCMR;    /* +0x04: match register */
         unsigned long  RTCLR;    /* +0x08: load register */
@@ -14,7 +15,7 @@ typedef volatile struct{
         unsigned long  RTCICR;   /* +0x1C: interrupt clear register */
 }rtc_reg_t;
 
-struct rtc_time{
+struct rtc_time {
     unsigned int year;
     unsigned int mon;
     unsigned int day;
@@ -36,6 +37,10 @@ static void rtc_time_translate(void)
     tm.sec = cur_time % 60;
 }
 
+
+static dev_t devno;
+static struct cdev *rtc_cdev;
+
 static int rtc_open(struct inode *inode, struct file *fp)
 {
     return 0;
@@ -49,10 +54,9 @@ static int rtc_release(struct inode *inode, struct file *fp)
 static ssize_t rtc_read(struct file *fp, char __user *buf, 
                            size_t size, loff_t *pos)
 {
+
     cur_time = regs->RTCDR;
     rtc_time_translate();
-    
-    // tm ==> buf
     if (copy_to_user(buf, &tm, sizeof(struct rtc_time)) != 0){
         printk("read error!\n");
         return -1;
@@ -84,12 +88,21 @@ static int __init rtc_init(void)
     regs = (rtc_reg_t *)ioremap(RTC_BASE, sizeof(rtc_reg_t));
     printk("rtc_init\n");
 
-    ret = register_chrdev(222, "rtc-demo", &rtc_fops);
-    if (ret < 0) {
-        printk("Register char module: rtc failed..\n");
-        return 0;
+    ret = alloc_chrdev_region(&devno, 0, 1, "rtc-demo");
+    if (ret) {
+        printk("alloc char device number failed!\n");
+        return ret;
     }
-    else {
+    printk("RTC devnum:%d minornum:%d\n", MAJOR(devno), MINOR(devno));
+
+    rtc_cdev = cdev_alloc();
+    cdev_init(rtc_cdev, &rtc_fops);
+
+    ret = cdev_add(rtc_cdev, devno, 1);
+    if (ret < 0) {
+        printk("cdev_add failed..\n");
+        return -1;
+    } else {
         printk("Register char module: rtc success!\n");
     }
     
@@ -98,8 +111,9 @@ static int __init rtc_init(void)
 
 static void __exit rtc_exit(void)
 {
+    cdev_del(rtc_cdev);
+    unregister_chrdev_region(devno, 1);
     printk("Goodbye char module: rtc!\n");
-    unregister_chrdev(222,"rtc");
 }
 
 module_init(rtc_init);

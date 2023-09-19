@@ -2,6 +2,7 @@
 #include <linux/init.h>
 #include <linux/fs.h>
 #include <linux/io.h>
+#include <linux/cdev.h>
 
 typedef volatile struct{
         unsigned long  RTCDR;    /* +0x00: data register */
@@ -36,6 +37,10 @@ static void rtc_time_translate(void)
     tm.sec = cur_time % 60;
 }
 
+
+static dev_t dev;
+static struct cdev *rtc_cdev;
+
 static int rtc_open(struct inode *inode, struct file *fp)
 {
     return 0;
@@ -49,10 +54,9 @@ static int rtc_release(struct inode *inode, struct file *fp)
 static ssize_t rtc_read(struct file *fp, char __user *buf, 
                            size_t size, loff_t *pos)
 {
+
     cur_time = regs->RTCDR;
     rtc_time_translate();
-    
-    // tm ==> buf
     if (copy_to_user(buf, &tm, sizeof(struct rtc_time)) != 0){
         printk("read error!\n");
         return -1;
@@ -84,10 +88,16 @@ static int __init rtc_init(void)
     regs = (rtc_reg_t *)ioremap(RTC_BASE, sizeof(rtc_reg_t));
     printk("rtc_init\n");
 
-    ret = register_chrdev(222, "rtc-demo", &rtc_fops);
+    dev = MKDEV(222, 0) ;
+
+    rtc_cdev = cdev_alloc();
+    cdev_init(rtc_cdev, &rtc_fops);
+
+    register_chrdev_region(dev, 1, "rtc-demo");
+    ret = cdev_add(rtc_cdev, dev, 1);
     if (ret < 0) {
-        printk("Register char module: rtc failed..\n");
-        return 0;
+        printk("cdev_add failed..\n");
+        return -1;
     }
     else {
         printk("Register char module: rtc success!\n");
@@ -98,8 +108,9 @@ static int __init rtc_init(void)
 
 static void __exit rtc_exit(void)
 {
+    cdev_del(rtc_cdev);
+    unregister_chrdev_region(dev, 1);
     printk("Goodbye char module: rtc!\n");
-    unregister_chrdev(222,"rtc");
 }
 
 module_init(rtc_init);

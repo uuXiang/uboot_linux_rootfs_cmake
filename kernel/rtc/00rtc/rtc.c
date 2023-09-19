@@ -62,5 +62,5 @@ static void __exit rtc_exit(void)
 module_init(rtc_init);
 module_exit(rtc_exit);
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("wit@zhaixue.cc");
+MODULE_AUTHOR("uuxiang");
 
