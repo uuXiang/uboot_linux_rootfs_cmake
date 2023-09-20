@@ -30,7 +30,8 @@ make_rtc_drivers() {
     # make_rtc ${RTC_DIR}/00rtc
     # make_rtc ${RTC_DIR}/01rtc
     # make_rtc ${RTC_DIR}/02rtc
-    make_rtc ${RTC_DIR}/03rtc
+    # make_rtc ${RTC_DIR}/03rtc
+    make_rtc ${RTC_DIR}/04rtc
 
     check_return "make rtc drivers"
 }
@@ -49,7 +50,8 @@ make_rtc_apps() {
     # make_rtc_app ${RTC_DIR}/00rtc
     # make_rtc_app ${RTC_DIR}/01rtc
     # make_rtc_app ${RTC_DIR}/02rtc
-    make_rtc_app ${RTC_DIR}/03rtc
+    # make_rtc_app ${RTC_DIR}/03rtc
+    make_rtc_app ${RTC_DIR}/04rtc
 
     check_return "make rtc apps"
 }
