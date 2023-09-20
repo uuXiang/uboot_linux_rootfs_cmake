@@ -19,8 +19,9 @@ check_return(){
 make_rtc() {
     echo "make rtc"
     cd $1
+    make clean
     make
-    cp -rf rtc.ko ${RTC_OUT}
+    cp rtc.ko ${RTC_OUT}
     check_return "make rtc"
 }
 
@@ -31,7 +32,8 @@ make_rtc_drivers() {
     # make_rtc ${RTC_DIR}/01rtc
     # make_rtc ${RTC_DIR}/02rtc
     # make_rtc ${RTC_DIR}/03rtc
-    make_rtc ${RTC_DIR}/04rtc
+    # make_rtc ${RTC_DIR}/04rtc
+    make_rtc ${RTC_DIR}/05rtc
 
     check_return "make rtc drivers"
 }
@@ -39,8 +41,8 @@ make_rtc_drivers() {
 make_rtc_app() {
     echo "make rtc app"
     cd $1
-    make
-    cp -rf rtc ${APP_OUT}
+    make rtc
+    cp rtc ${APP_OUT}
     check_return "make rtc app"
 }
 
@@ -51,7 +53,8 @@ make_rtc_apps() {
     # make_rtc_app ${RTC_DIR}/01rtc
     # make_rtc_app ${RTC_DIR}/02rtc
     # make_rtc_app ${RTC_DIR}/03rtc
-    make_rtc_app ${RTC_DIR}/04rtc
+    # make_rtc_app ${RTC_DIR}/04rtc
+    make_rtc_app ${RTC_DIR}/05rtc
 
     check_return "make rtc apps"
 }
