@@ -8,3 +8,4 @@
 */*.ko
 */*.symvers
 */modules.order
+*/*.a
