@@ -9,3 +9,5 @@
 */*.symvers
 */modules.order
 */*.a
+*/*/*.o
+*/*.out
