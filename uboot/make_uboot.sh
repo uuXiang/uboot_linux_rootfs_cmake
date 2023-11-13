@@ -17,7 +17,7 @@ make_uboot() {
     cd ./u-boot-2022.07-rc3
     # make clean
     make vexpress_ca9x4_defconfig
-    # make menuconfig
+    make menuconfig
     make -j8
 
     cp -f u-boot ${OUT}
