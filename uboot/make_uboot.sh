@@ -17,7 +17,7 @@ make_uboot() {
     cd ./u-boot-2022.07-rc3
     # make clean
     make vexpress_ca9x4_defconfig
-    make menuconfig
+    # make menuconfig
     make -j8
 
     cp -f u-boot ${OUT}
@@ -25,6 +25,20 @@ make_uboot() {
     check_return "make uboot"
 }
 
+make_uboot_initrd() {
+    echo "make uboot"
+    cd ./u-boot-2022.07-rc3
+    # make clean
+    make vexpress_ca9x4_initrd_defconfig
+    # make menuconfig
+    make -j8
+
+    cp -f u-boot ${OUT}/u-boot-initrd
+
+    check_return "make uboot"
+}
+
 export ARCH=${ARCH_ARM}
 export CROSS_COMPILE=${CROSS_COMPILE_ARM}
-make_uboot
+# make_uboot
+make_uboot_initrd

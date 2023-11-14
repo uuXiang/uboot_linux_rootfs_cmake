@@ -29,6 +29,24 @@ make_kernel() {
     check_return "make kernel"
 }
 
+make_kernel_initrd() {
+    echo "make kernel"
+    cd ./linux-5.10.4
+    # make clean
+    make vexpress_initrd_defconfig
+    # make menuconfig
+    make zImage -j8
+    make modules -j8
+    make dtbs -j8
+    make LOADADDR=0x60003000 uImage -j8
+
+    cp -raf ./arch/arm/boot/zImage ${OUT}/zImage_initrd
+    cp -raf ./arch/arm/boot/dts/vexpress-v2p-ca9.dtb ${OUT}
+
+    check_return "make kernel"
+}
+
 export ARCH=${ARCH_ARM}
 export CROSS_COMPILE=${CROSS_COMPILE_ARM}
-make_kernel
+# make_kernel
+make_kernel_initrd
